@@ -13,6 +13,7 @@ An application to tracks bets (so we can reach maldives as soon as possible)
 ### Clone repository
 
 Run `git clone git@github.com:timlestander/project-maldives.git` (SSH)
+
 Run `https://github.com/timlestander/project-maldives.git` (HTTPS)
 
 ### Install dependencies
@@ -28,6 +29,7 @@ Run `mongod`
 ### Optional: start mongo shell or mongoDB Compass
 
 Run `mongosh` to access mongo shell to be able to query the database
+
 Run mongoDB Compass executable to be able to see/query/change the database through a GUI
 
 ### Start client
