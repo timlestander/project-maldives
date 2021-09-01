@@ -1,0 +1,3 @@
+export const ADD_BETTERS = '[BETTER] ADD_BETTERS';
+export const ADD_BETTER = '[BETTER] ADD_BETTER';
+export const DELETE_BETTER = '[BETTER] DELETE_BETTER'

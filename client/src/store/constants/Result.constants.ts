@@ -1,0 +1,3 @@
+export const ADD_RESULTS = '[RESULT] ADD_RESULTS';
+export const ADD_RESULT = '[RESULT] ADD_RESULT';
+export const DELETE_RESULT = '[RESULT] DELETE_RESULT'
