@@ -2,7 +2,7 @@ import axios from 'axios'
 import { BetType } from '../assets/interfaces';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: 'https://gentle-thicket-01072.herokuapp.com/api',
 })
 
 // Bets
