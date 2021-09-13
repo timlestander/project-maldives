@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 //         console.error('Connection error', e.message)
 //     })
 
-const connection = "mongodb+srv://bankbankbank:bankbankbank@maldives.2mdll.mongodb.net/maldives?retryWrites=true&w=majority";
+const connection = "mongodb+srv://bankbankbank:bankbankbank@maldives.2mdll.mongodb.net/maldives?retryWrites=true&w=majority&ssl=true";
 mongoose.connect(connection, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Database Connected Successfully"))
     .catch(err => console.log(err));
