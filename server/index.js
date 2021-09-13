@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-
+const path = require('path')
 const db = require('./db')
 
 const sportRouter = require('./routes/sport.routes')
@@ -16,6 +16,11 @@ const apiPort = 8000
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 app.use(bodyParser.json())
+
+app.use(express.static(path.join(__dirname, '../client/build')))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build'))
+})
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
