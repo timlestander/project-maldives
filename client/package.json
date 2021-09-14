@@ -25,6 +25,7 @@
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-toastify": "^8.0.2",
     "react-vis": "^1.11.7",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
@@ -34,8 +35,9 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "dev": "react-scripts start",
-    "start": "node ../server/index.js",
+    "start": "npm run start:dev",
+    "start:dev": "react-scripts start",
+    "start:prod": "cd ../server && npm run start:prod",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
