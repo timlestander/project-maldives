@@ -1,7 +1,7 @@
 const League = require('../models/league.model')
 
-getLeagues = async (req, res) => {
-  await League.find({}, (err, leagues) => {
+getLeagues = (req, res) => {
+  return League.find({}, (err, leagues) => {
     if (err) {
       return res.status(400).json({ success: false, error: err })
     }

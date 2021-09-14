@@ -1,7 +1,7 @@
 const Bet = require('../models/bet.model')
 
-getBets = async (_, res) => {
-  await Bet.find({}, (err, bets) => {
+getBets = (_, res) => {
+  return Bet.find({}, (err, bets) => {
     if (err) {
       return res.status(400).json({ success: false, error: err })
     }
@@ -14,8 +14,41 @@ getBets = async (_, res) => {
   }).catch(err => console.log(err))
 }
 
-deleteBet = async (req, res) => {
-  await Bet.findOneAndDelete({ _id: req.params.id }, (err, bet) => {
+updateBet = async (req, res) => {
+  const body = req.body
+
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: 'You must provide a body to update',
+    })
+  }
+
+  Bet.findOneAndUpdate({ _id: req.params.id }, body, { new: true }, (err, bet) => {
+    if (err) {
+      return res.status(404).json({
+        err,
+        success: false,
+        message: 'Bet not found!',
+      })
+    } else if (!bet) {
+      console.log(bet);
+      return res.status(501).json({
+        message: 'Something went wrong',
+        success: false,
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: bet,
+      message: 'Successfully updated bet'
+    })
+  });
+}
+
+deleteBet = (req, res) => {
+  return Bet.findOneAndDelete({ _id: req.params.id }, (err, bet) => {
     if (err) {
       return res
         .status(400)
@@ -69,4 +102,5 @@ module.exports = {
   getBets,
   createBet,
   deleteBet,
+  updateBet,
 }

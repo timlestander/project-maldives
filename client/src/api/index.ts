@@ -1,14 +1,37 @@
 import axios from 'axios'
+import { toast } from 'react-toastify';
 import { BetType } from '../assets/interfaces';
 
+let apiUrl: string;
+
+if (process.env.NODE_ENV === 'production') {
+  apiUrl = 'https://gentle-thicket-01072.herokuapp.com';
+} else {
+  apiUrl = 'http://localhost:8000';
+}
+
 const api = axios.create({
-    baseURL: 'https://gentle-thicket-01072.herokuapp.com/api',
+    baseURL: `${apiUrl}/api`,
+    headers: {
+      'Authentication': localStorage.getItem('secret')
+    }
 })
+
+// Catch all unauthorized responses
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response.status === 401) {
+      toast('Du är inte inloggad', { type: 'error' });
+    }
+    return Promise.reject();
+});
 
 // Bets
 export const getAllBets = () => api.get(`/bets`);
 export const createBet = (bet: BetType) => api.post(`/bets`, bet);
 export const deleteBet = (id: any) => api.delete(`/bets/${id}`);
+export const updateBet = (bet: BetType) => api.put(`/bets/${bet._id}`, bet);
 
 // Sports
 export const getAllSports = () => api.get(`/sports`)
@@ -38,6 +61,7 @@ const apis = {
     createLeague,
     createType,
     deleteBet,
+    updateBet,
 }
 
 export default apis

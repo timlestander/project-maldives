@@ -1,7 +1,7 @@
 const Better = require('../models/better.model')
 
-getBetters = async (req, res) => {
-  await Better.find({}, (err, betters) => {
+getBetters = (req, res) => {
+  return Better.find({}, (err, betters) => {
     if (err) {
       return res.status(400).json({ success: false, error: err })
     }

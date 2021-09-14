@@ -1,7 +1,7 @@
 const Sport = require('../models/sport.model')
 
-getSports = async (req, res) => {
-  await Sport.find({}, (err, sports) => {
+getSports = (req, res) => {
+  return Sport.find({}, (err, sports) => {
     if (err) {
       return res.status(400).json({ success: false, error: err })
     }

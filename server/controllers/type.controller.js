@@ -1,7 +1,7 @@
 const Type = require('../models/type.model')
 
-getTypes = async (req, res) => {
-  await Type.find({}, (err, types) => {
+getTypes = (req, res) => {
+  return Type.find({}, (err, types) => {
     if (err) {
       return res.status(400).json({ success: false, error: err })
     }
