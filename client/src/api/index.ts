@@ -4,11 +4,13 @@ import { BetType } from '../assets/interfaces';
 
 let apiUrl: string;
 
-if (process.env.NODE_ENV === 'production') {
-  apiUrl = 'https://gentle-thicket-01072.herokuapp.com';
-} else {
-  apiUrl = 'http://localhost:8000';
-}
+// if (process.env.NODE_ENV === 'production') {
+//   apiUrl = 'https://gentle-thicket-01072.herokuapp.com';
+// } else {
+//   apiUrl = 'http://localhost:8000';
+// }
+
+apiUrl = 'https://gentle-thicket-01072.herokuapp.com';
 
 const api = axios.create({
     baseURL: `${apiUrl}/api`,
