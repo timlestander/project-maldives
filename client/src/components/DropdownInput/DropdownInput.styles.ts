@@ -49,6 +49,7 @@ export const Wrapper = styled.div`
     border: 1px solid gray;
     border-top: 0;
     box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.1);
+    max-height: 250px;
 
     .item {
       padding: 6px;

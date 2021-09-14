@@ -10,8 +10,18 @@ type Props = {
 const ActionButtons: React.FC<Props> = ({ onEditClick, onDeleteClick }) => {
   return (
     <div>
-      <ActionButton onClick={() => onEditClick()}><EditIcon /></ActionButton>
-      <ActionButton onClick={() => onDeleteClick()}><DeleteIcon /></ActionButton>
+      <ActionButton 
+        onClick={(e) => { 
+          e.stopPropagation();
+          onEditClick();
+        }}><EditIcon />
+      </ActionButton>
+      <ActionButton
+        onClick={(e) => {
+          e.stopPropagation();
+          onDeleteClick();
+        }}><DeleteIcon />
+      </ActionButton>
     </div>
   )
 }

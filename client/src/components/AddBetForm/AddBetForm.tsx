@@ -16,6 +16,7 @@ import * as TypeConstants from '../../store/constants/Type.constants';
 import { LeagueActions } from "../../store/actions/League.actions";
 import { SportActions } from "../../store/actions/Sport.actions";
 import { TypeActions } from "../../store/actions/Type.actions";
+import { toast } from "react-toastify";
 
 const resultOptions = [
   RESULT_TYPE.WIN,
@@ -26,11 +27,12 @@ const resultOptions = [
 ];
 
 type Props = {
-  addBet: (bet: BetType) => void;
+  saveBet: (bet: BetType) => void;
   closeDialog: () => void;
+  selectedBet: BetType | undefined;
 }
 
-const AddBetForm: React.FC<Props> = ({ closeDialog, addBet }) => {
+const AddBetForm: React.FC<Props> = ({ closeDialog, saveBet, selectedBet }) => {
 
   const betterOptions = useSelector((state: AppState) => state.betters);
   const betterDispatch = useDispatch<Dispatch<BetterActions>>();
@@ -45,7 +47,7 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, addBet }) => {
   const typeDispatch = useDispatch<Dispatch<TypeActions>>();
 
 
-  const [formData, setFormData] = useState<BetType>({
+  const [formData, setFormData] = useState<BetType>(selectedBet || {
     better: '',
     amount: 0,
     profit: 0,
@@ -70,6 +72,9 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, addBet }) => {
         apis.createBetter({ name: value }).then((response: any) => {
           if (response.data.success) {
             betterDispatch({ type: BetterConstants.ADD_BETTER, payload: value })
+            toast('Bettar tillagd!', { type: 'success' })
+          } else {
+            toast('Kunde inte lägga till bettare.', { type: 'error' })
           }
         })
         break;
@@ -77,6 +82,9 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, addBet }) => {
         apis.createLeague({ name: value }).then((response: any) => {
           if (response.data.success) {
             leagueDispatch({ type: LeagueConstants.ADD_LEAGUE, payload: value })
+            toast('Liga tillagd!', { type: 'success' })
+          } else {
+            toast('Kunde inte lägga till liga.', { type: 'error' })
           }
         })
         break;
@@ -84,6 +92,9 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, addBet }) => {
         apis.createSport({ name: value }).then((response: any) => {
           if (response.data.success) {
             sportDispatch({ type: SportConstants.ADD_SPORT, payload: value })
+            toast('Sport tillagd!', { type: 'success' })
+          } else {
+            toast('Kunde inte lägga till bettare.', { type: 'error' })
           }
         })
         break;
@@ -91,6 +102,9 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, addBet }) => {
         apis.createType({ name: value }).then((response: any) => {
           if (response.data.success) {
             typeDispatch({ type: TypeConstants.ADD_TYPE, payload: value })
+            toast('Speltyp tillagd', { type: 'success' })
+          } else {
+            toast('Kunde inte lägga till speltyp.', { type: 'error' })
           }
         })
         break;
@@ -124,7 +138,7 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, addBet }) => {
   }
 
   const handleSave = () => {
-    addBet(formData)
+    saveBet(formData)
   }
 
   const removeBetRow = (index: number) => {
@@ -146,8 +160,8 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, addBet }) => {
           sport: '',
           league: '',
           odds: 0,
-          type: '1X2',
-          result: RESULT_TYPE.PENDING
+          type: '',
+          result: ''
         }
       ]
     })

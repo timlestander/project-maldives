@@ -21,6 +21,7 @@ import { LeagueActions } from '../../store/actions/League.actions';
 import { SportActions } from '../../store/actions/Sport.actions';
 import { TypeActions } from '../../store/actions/Type.actions';
 import { Spinner } from '../../components/Spinner/Spinner';
+import { toast } from 'react-toastify';
 
 type Props = {
   bets: BetType2[];
@@ -38,11 +39,10 @@ const BetPage: React.FC<Props> = () => {
   const [isFakeLoading, setIsFakeLoading] = useState(true);
   const [selectedBet, setSelectedBet] = useState<BetType | undefined>(undefined);
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   
   setTimeout(() => {
     setIsFakeLoading(false);
-  }, 5000);
+  }, 2000);
 
   useEffect(() => {
     // TODO: merge all these requests
@@ -105,37 +105,52 @@ const BetPage: React.FC<Props> = () => {
   }
 
   const deleteBet = (bet: BetType) => {
-    apis.deleteBet(bet._id).then(() => {
-      if (bet._id) {
-        betDispatch({ type: BetConstants.DELETE_BET, payload: bet._id });
-      }
-    }).catch(err => {
-      console.log(err);
-    })
+    if (window.confirm('Vill du ta bort detta bet?')) {
+      apis.deleteBet(bet._id).then((response: any) => {
+        if (bet._id && response.data.success) {
+          betDispatch({ type: BetConstants.DELETE_BET, payload: bet._id });
+          toast('Bet borttaget!', { type: 'success' });
+        } else {
+          toast('Kunde inte ta bort bet.', { type: 'error' });
+        }
+      })
+    }
   }
 
-  const addBet = (bet: BetType) => {
-    apis.createBet(bet).then((response: any) => {
-      if (response.data.success) {
-        betDispatch({ type: BetConstants.ADD_BET, payload: response.data.data })
-        setAddDialogOpen(false);
-      }
-    })
+  const saveBet = (bet: BetType) => {
+    if (bet._id) {
+      apis.updateBet(bet).then((response: any) => {
+        if (response.data.success) {
+          betDispatch({ type: BetConstants.UPDATE_BET, payload: response.data.data })
+          setAddDialogOpen(false);
+          toast('Bet uppdaterat!', { type: 'success' });
+        } else {
+          toast('Kunde inte lägga till bet.', { type: 'error' });
+        }
+      })
+    } else {
+      apis.createBet(bet).then((response: any) => {
+        if (response.data.success) {
+          betDispatch({ type: BetConstants.ADD_BET, payload: response.data.data })
+          setAddDialogOpen(false);
+          toast('Bet tillagt!', { type: 'success' });
+        } else {
+          toast('Kunde inte uppdatera bet.', { type: 'error' })
+        }
+      });
+    }
+
+    setSelectedBet(undefined);
   }
 
   const newBet = () => {
+    setSelectedBet(undefined)
     setAddDialogOpen(true);
   }
 
   const editBet = (bet: BetType) => {
     setSelectedBet(bet);
-    setEditDialogOpen(true);
-    console.log(selectedBet);
-  }
-
-  const closeDialog = (type: any) => {
-    if (type === 'mouseup') return;
-    setEditDialogOpen(false);
+    setAddDialogOpen(true);
   }
 
   return (
@@ -158,15 +173,18 @@ const BetPage: React.FC<Props> = () => {
 
           <Dialog
             open={isAddDialogOpen}
-            onClose={closeDialog}
+            onClose={() => setAddDialogOpen(false)}
             maxWidth={'lg'}
-            scroll={'paper'}
           >
             <AddBetForm
-              closeDialog={() => setAddDialogOpen(false)} 
-              addBet={addBet}
+              selectedBet={selectedBet}
+              closeDialog={() => {
+                setSelectedBet(undefined);
+                setAddDialogOpen(false);
+              }}
+              saveBet={saveBet}
             >
-            </AddBetForm> 
+            </AddBetForm>
           </Dialog>
         </React.Fragment>
       )}

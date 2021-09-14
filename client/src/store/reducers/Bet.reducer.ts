@@ -1,7 +1,7 @@
 import { RESULT_TYPE } from '../../assets/enums';
 import { Bet, BetType, BetType2 } from '../../assets/interfaces';
 import { BetActions } from '../actions/Bet.actions';
-import { ADD_BETS, DELETE_BET, ADD_BET } from '../constants/Bet.constants';
+import { ADD_BETS, DELETE_BET, ADD_BET, UPDATE_BET } from '../constants/Bet.constants';
 
 export type BetState = BetType2[];
 
@@ -22,6 +22,15 @@ const betsReducer = (state: BetState = initialState, action: BetActions) => {
         ...state,
         deriveBetData(action.payload)
       ];
+    case UPDATE_BET:
+      return [
+        ...state.map(bet => {
+          if (bet._id === action.payload._id) {
+            return deriveBetData(action.payload);
+          }
+          return bet;
+        })
+      ]
     default:
       return state;
   }

@@ -15,7 +15,13 @@ export interface IDeleteBetAction {
   payload: string;
 }
 
+export interface IUpdateBetAction {
+  readonly type: '[BET] UPDATE_BET';
+  payload: BetType;
+}
+
 export type BetActions = 
   | IAddBetsAction
   | IAddBetAction
   | IDeleteBetAction
+  | IUpdateBetAction

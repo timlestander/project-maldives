@@ -7,6 +7,9 @@ import Header from './components/Header/Header';
 import rootReducer from './store';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import GraphPage from './pages/GraphPage/GraphPage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from 'react';
 
 const store = createStore(
   rootReducer,
@@ -14,6 +17,17 @@ const store = createStore(
 );
 
 const MaldivesApp = () => {
+
+  // Just temporary, no panic please
+  useEffect(() => {
+    if (!localStorage.getItem('secret')) {
+      const password = window.prompt('Lösenord din lilla lurkus');
+      if (password === 'topsecret') {
+        localStorage.setItem('secret', 'very-good-authentication');
+      }
+    }
+  }, [])
+
   return (
     <Provider store={store}>
       <Router>
@@ -22,6 +36,16 @@ const MaldivesApp = () => {
           <Route exact path='/' component={BetPage} />
           <Route exact path='/graphs' component={GraphPage} />
         </Switch>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          />
       </Router>
     </Provider>
   );
