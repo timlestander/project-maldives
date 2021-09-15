@@ -60,7 +60,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8000",
   "engines": {
     "node": "10.16.0"
   }
