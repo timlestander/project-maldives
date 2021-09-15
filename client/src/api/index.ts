@@ -24,7 +24,7 @@ api.interceptors.response.use(
     if (error.response.status === 401) {
       toast('Du är inte inloggad', { type: 'error' });
     }
-    return Promise.reject();
+    return Promise.reject(error);
 });
 
 // Bets
