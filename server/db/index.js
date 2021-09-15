@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const prod = process.env.ENVIRONMENT === 'production' ? true : false;
+const prod = process.env.NODE_ENV === 'production' ? true : false;
 
 if (prod) {
   const connection = "mongodb+srv://bankbankbank:bankbankbank@maldives.2mdll.mongodb.net/maldives?retryWrites=true&w=majority&ssl=true";
