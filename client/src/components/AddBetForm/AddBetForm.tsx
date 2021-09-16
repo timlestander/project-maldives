@@ -59,7 +59,7 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, saveBet, selectedBet }) => {
         prediction: '',
         sport: '',
         league: '',
-        odds: 0,
+        odds: 1,
         type: '1X2',
         result: RESULT_TYPE.PENDING,
       }
@@ -119,8 +119,6 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, saveBet, selectedBet }) => {
         parseInt(e.target.value) :
         e.target.value
     })
-
-    console.log(formData);
   }
 
   const handleBetChange = (index: number) => (e: any) => {
@@ -159,7 +157,7 @@ const AddBetForm: React.FC<Props> = ({ closeDialog, saveBet, selectedBet }) => {
           prediction: '',
           sport: '',
           league: '',
-          odds: 0,
+          odds: 1,
           type: '',
           result: ''
         }

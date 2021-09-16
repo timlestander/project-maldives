@@ -11,11 +11,11 @@ export const Wrapper = styled.div`
   background: #ffffff;
 
   &.active {
-    background: lightblue !important;
+    background: #ffffd5 !important;
 
     ${Base} {
-      background: #7fbcd0;
-      border-bottom: 1px solid #88c2d6;
+      background: #f7f7c5;
+      border-bottom: 1px solid #eaea96;
     }
   }
 
@@ -25,7 +25,7 @@ export const Wrapper = styled.div`
 
   &:hover {
     cursor: pointer;
-    background: #ffffd5;
+    background: #fbfbe9;
   }
 `;
 
@@ -57,4 +57,48 @@ export const DetailsListBodyItem = styled.div`
 export const ListItem = styled.div`
   flex: 1;
   padding: 12px 16px;
+
+  span {
+    padding: 4px 12px;
+    color: white;
+    border-radius: 8px;
+    font-size: 15px;
+
+    &.result {
+      &.win {
+        background: #79c5a9;
+      }
+
+      &.loss {
+        background: #eb403f;
+      }
+
+      &.push {
+        background: #f6df82;
+      }
+
+      &.pending {
+        background: #dadada;
+        color: black;
+      }
+    }
+
+    &.profit {
+      &.win {
+        color: #79c5a9;
+      }
+
+      &.loss {
+        color: #eb403f;
+      }
+
+      &.push {
+        color: #f6df82;
+      }
+
+      &.pending {
+        color: black;
+      }
+    }
+  }
 `;

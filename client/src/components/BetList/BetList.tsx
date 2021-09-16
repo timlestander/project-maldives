@@ -19,7 +19,7 @@ const BetList: React.FC<Props> = ({ bets, deleteBet, newBet, editBet }) => {
         <ListHeaderItem>Speltyp</ListHeaderItem>
         <ListHeaderItem>Odds</ListHeaderItem>
         <ListHeaderItem>Insats</ListHeaderItem>
-        <ListHeaderItem>Vinst</ListHeaderItem>
+        <ListHeaderItem>Utfall</ListHeaderItem>
         <ListHeaderItem>Bank</ListHeaderItem>
         <ListHeaderItem>Actions</ListHeaderItem>
       </ListHeader>

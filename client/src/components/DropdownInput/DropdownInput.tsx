@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classnames from "classnames";
 import { useEffect, useRef } from "react";
 import { useState } from "react";
 import { Label, Wrapper } from "./DropdownInput.styles"
@@ -20,6 +20,7 @@ const DropdownInput: React.FC<Props> = ({ label, value, required, createable, na
   const [filteredOptions, setFilteredOptions] = useState(options);
   const [valueExist, setValueExist] = useState(false);
   const [valid, setValid] = useState(false);
+  const [selectedRowIdx, setSelectedRowIdx] = useState(-1);
 
   const dropdown = useRef<HTMLDivElement>(null);
   
@@ -41,6 +42,7 @@ const DropdownInput: React.FC<Props> = ({ label, value, required, createable, na
     // Set filter
     const filtered = options.filter(options => options.toLocaleLowerCase().indexOf(filter.toLocaleLowerCase()) > -1);
     setFilteredOptions(filtered);
+    setSelectedRowIdx(-1);
 
     // Since we got new options or new value, see if current value is valid
     validate(filter);
@@ -52,7 +54,9 @@ const DropdownInput: React.FC<Props> = ({ label, value, required, createable, na
   }, [value]);
 
   const selectValue = (value: string) => {
+    console.log(value);
     setDropdownOpen(false);
+    setFilter(value);
     let e: any = {
       target: {
         value,
@@ -94,23 +98,53 @@ const DropdownInput: React.FC<Props> = ({ label, value, required, createable, na
     setDropdownOpen(false);
   }
 
+  const handleKeyTraverse = (e: any) => {
+    console.log('not here right')
+    const { key } = e;
+    
+    if (key === "ArrowDown" && selectedRowIdx < filteredOptions.length - 1) {
+      setDropdownOpen(true);
+      setSelectedRowIdx(selectedRowIdx + 1);
+    } else if (key === "ArrowUp" && selectedRowIdx > 0) {
+      setSelectedRowIdx(selectedRowIdx - 1);
+    } else if (key === "Enter" && filteredOptions[selectedRowIdx]) {
+      selectValue(filteredOptions[selectedRowIdx]);
+      setDropdownOpen(false);
+    } else if (key === "Esc") {
+      setDropdownOpen(false);
+      e.stopPropagation();
+    } else if (key === "Tab") {
+      setDropdownOpen(false);
+    }
+  }
+
   return (
     <Wrapper>
       <Label>{label}</Label>
       <div className="row">
         <input
           type="text"
-          className={ classNames({ valid, invalid: !valid }) }
+          className={ classnames({ valid, invalid: !valid }) }
           value={filter}
           onFocus={() => setDropdownOpen(true)}
           onChange={(e) => handleInputChange(e)}
+          onKeyDown={(e) => handleKeyTraverse(e)}
+          tabIndex={0}
         />
-        {!valueExist && createable && filter.length > 0 && (<div onClick={() => handleAddData()} className='addBtn'>+</div>) }
+        {!valueExist && createable && filter.length > 0 && (<button onClick={() => handleAddData()}>+</button>) }
       </div>
       {dropdownOpen && filteredOptions.length > 0 && (
         <div className="dropdown" ref={dropdown}>
           {filteredOptions.map((opt, index) => (
-            <div className="item" key={index} onClick={() => selectValue(opt)}>{opt}</div>
+            <div 
+              key={index} 
+              className={
+                classnames("item", {
+                selected: selectedRowIdx === index
+              })}
+              onClick={() => selectValue(opt)}>
+                {opt}
+            </div>
           ))}
         </div>
       )}

@@ -83,8 +83,10 @@ const BetPage: React.FC<Props> = () => {
 
   const getTotal = () => {
     return bets.reduce((acc: number, bet: BetType2) => {
-      if (bet.result === RESULT_TYPE.WIN) {
-        return bet.profit ? acc + bet.profit : acc + bet.odds * bet.amount;
+      if (bet.result === RESULT_TYPE.WIN || bet.result === RESULT_TYPE.CASHOUT) {
+        return acc + bet.profit;
+      } else if (bet.result === RESULT_TYPE.LOSS) {
+        return acc - bet.amount;
       } else {
         return acc;
       }
@@ -93,10 +95,10 @@ const BetPage: React.FC<Props> = () => {
 
   const getHitRate = () => {
     let hits: number = 0;
-    const total: number = bets.filter(bet => bet.result === RESULT_TYPE.WIN || bet.result === RESULT_TYPE.LOSS).length;
+    const total: number = bets.filter(bet => bet.result === RESULT_TYPE.WIN || bet.result === RESULT_TYPE.LOSS || bet.result === RESULT_TYPE.CASHOUT).length;
 
     bets.forEach(bet => {
-      if (bet.result === RESULT_TYPE.WIN) {
+      if (bet.result === RESULT_TYPE.WIN || (bet.result === RESULT_TYPE.CASHOUT && bet.profit > bet.amount)) {
         hits++;
       } 
     });

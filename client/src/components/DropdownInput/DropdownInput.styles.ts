@@ -4,7 +4,8 @@ export const Wrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-
+  overflow: visible;
+  
   .row {
     display: flex;
 
@@ -24,10 +25,10 @@ export const Wrapper = styled.div`
       }
     }
 
-    .addBtn {
+    button {
       display: flex;
-      flex: 0 0 31px;
-      height: 31px;
+      flex: 0 0 33px;
+      height: 33px;
       background: gold;
       justify-content: center;
       align-items: center;
@@ -49,14 +50,19 @@ export const Wrapper = styled.div`
     border: 1px solid gray;
     border-top: 0;
     box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.1);
-    max-height: 250px;
+    max-height: 175px;
+    overflow-y: auto;
 
     .item {
-      padding: 6px;
+      padding: 6px 12px;
       cursor: pointer;
 
+      &.selected {
+        background: orange;
+      }
+
       &:hover {
-        background: #eeeeee;
+        background: #f9f4dc
       }
     }
   }

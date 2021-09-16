@@ -19,7 +19,7 @@ export const ListHeader = styled.div`
 export const ListHeaderItem = styled.div`
   flex: 1;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
   padding: 12px 16px;
   color: #464646;
 `;

@@ -3,6 +3,8 @@ import { BetType, BetType2 } from '../../assets/interfaces';
 import ActionButtons from '../ActionButtons/ActionButtons';
 import classnames from 'classnames';
 import React, { useState } from 'react';
+import classNames from 'classnames';
+import { RESULT_TYPE } from '../../assets/enums';
 
 type Props = {
   bet: BetType2;
@@ -33,8 +35,33 @@ const BetRow: React.FC<Props> = ({ bet, index, deleteBet, editBet }) => {
         <ListItem>{bet.type}</ListItem>
         <ListItem>{bet.odds.toFixed(2)}</ListItem>
         <ListItem>{bet.amount} kr</ListItem>
-        <ListItem>{bet.result}</ListItem>
-        <ListItem>{Math.round(bet.profit)}</ListItem>
+        <ListItem>
+          <span className={ 
+            classNames('result', {
+              win: bet.result === RESULT_TYPE.WIN || (bet.result === RESULT_TYPE.CASHOUT && bet.profit > bet.amount),
+              loss: bet.result === RESULT_TYPE.LOSS || (bet.result === RESULT_TYPE.CASHOUT && bet.profit <= bet.amount),
+              push: bet.result === RESULT_TYPE.PUSH,
+              pending: bet.result === RESULT_TYPE.PENDING,
+            })}>
+            {bet.result}
+          </span>
+        </ListItem>
+        <ListItem>
+          <span className={
+            classNames('profit', {
+              win: bet.result === RESULT_TYPE.WIN || (bet.result === RESULT_TYPE.CASHOUT && bet.profit > bet.amount),
+              loss: bet.result === RESULT_TYPE.LOSS || (bet.result === RESULT_TYPE.CASHOUT && bet.profit <= bet.amount),
+              push: bet.result === RESULT_TYPE.PUSH,
+              pending: bet.result === RESULT_TYPE.PENDING,
+            })
+          }>
+            {bet.result === RESULT_TYPE.LOSS && `-${bet.amount}`}
+            {bet.result == RESULT_TYPE.WIN && `+${Math.round(bet.profit)}`}
+            {bet.result == RESULT_TYPE.PUSH && `+${Math.round(bet.amount)}`}
+            {bet.result == RESULT_TYPE.CASHOUT && `+${Math.round(bet.profit)}`}
+            {bet.result === RESULT_TYPE.PENDING && 'TBD'}
+          </span>
+        </ListItem>
         <ListItem>
           <ActionButtons onEditClick={onEditClick} onDeleteClick={onDeleteClick}></ActionButtons>
         </ListItem>
@@ -47,7 +74,7 @@ const BetRow: React.FC<Props> = ({ bet, index, deleteBet, editBet }) => {
             <DetailsListHeaderItem>Spelat på</DetailsListHeaderItem>
             <DetailsListHeaderItem>Sport</DetailsListHeaderItem>
             <DetailsListHeaderItem>Liga</DetailsListHeaderItem>
-            <DetailsListHeaderItem>Träff</DetailsListHeaderItem>
+            <DetailsListHeaderItem>Utfall</DetailsListHeaderItem>
           </DetailsListHeader>
           {bet.bets.map((detail, index) => (
             <DetailsListBody key={index}>
