@@ -1,4 +1,4 @@
-import { Wrapper, ListItem, Details, Base, DetailsListHeader, DetailsListHeaderItem, DetailsListBody, DetailsListBodyItem } from './BetRow.styles';
+import { Wrapper, ListItem, Base, DetailsTable, DetailsTableRow, DetailsTableDataItem, DetailsTableHeaderItem } from './BetRow.styles';
 import { BetType, BetType2 } from '../../assets/interfaces';
 import ActionButtons from '../ActionButtons/ActionButtons';
 import classnames from 'classnames';
@@ -67,26 +67,26 @@ const BetRow: React.FC<Props> = ({ bet, index, deleteBet, editBet }) => {
         </ListItem>
       </Base>
       {active &&
-        <Details>
-          <DetailsListHeader>
-            <DetailsListHeaderItem>Typ</DetailsListHeaderItem>
-            <DetailsListHeaderItem>Match</DetailsListHeaderItem>
-            <DetailsListHeaderItem>Spelat på</DetailsListHeaderItem>
-            <DetailsListHeaderItem>Sport</DetailsListHeaderItem>
-            <DetailsListHeaderItem>Liga</DetailsListHeaderItem>
-            <DetailsListHeaderItem>Utfall</DetailsListHeaderItem>
-          </DetailsListHeader>
+        <DetailsTable>
+          <DetailsTableRow>
+            <DetailsTableHeaderItem>Typ</DetailsTableHeaderItem>
+            <DetailsTableHeaderItem>Match</DetailsTableHeaderItem>
+            <DetailsTableHeaderItem>Spelat på</DetailsTableHeaderItem>
+            <DetailsTableHeaderItem>Sport</DetailsTableHeaderItem>
+            <DetailsTableHeaderItem>Liga</DetailsTableHeaderItem>
+            <DetailsTableHeaderItem>Utfall</DetailsTableHeaderItem>
+          </DetailsTableRow>
           {bet.bets.map((detail, index) => (
-            <DetailsListBody key={index}>
-              <DetailsListBodyItem>{detail.type}</DetailsListBodyItem>
-              <DetailsListBodyItem>{detail.home} vs {detail.away}</DetailsListBodyItem>
-              <DetailsListBodyItem>{detail.prediction} @ {detail.odds.toFixed(2)}</DetailsListBodyItem>
-              <DetailsListBodyItem>{detail.sport}</DetailsListBodyItem>
-              <DetailsListBodyItem>{detail.league}</DetailsListBodyItem>
-              <DetailsListBodyItem>{detail.result}</DetailsListBodyItem>
-            </DetailsListBody>
+            <DetailsTableRow key={index}>
+              <DetailsTableDataItem>{detail.type}</DetailsTableDataItem>
+              <DetailsTableDataItem>{detail.home} vs {detail.away}</DetailsTableDataItem>
+              <DetailsTableDataItem>{detail.prediction} @ {detail.odds.toFixed(2)}</DetailsTableDataItem>
+              <DetailsTableDataItem>{detail.sport}</DetailsTableDataItem>
+              <DetailsTableDataItem>{detail.league}</DetailsTableDataItem>
+              <DetailsTableDataItem>{detail.result}</DetailsTableDataItem>
+            </DetailsTableRow>
           ))}
-        </Details>
+        </DetailsTable>
       }
     </Wrapper>
   )

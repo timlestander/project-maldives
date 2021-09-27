@@ -1,36 +1,58 @@
 import { RESULT_TYPE } from '../../assets/enums';
-import { Bet, BetType, BetType2 } from '../../assets/interfaces';
+import { Bet, BetType, BetType2, FilterType } from '../../assets/interfaces';
 import { BetActions } from '../actions/Bet.actions';
-import { ADD_BETS, DELETE_BET, ADD_BET, UPDATE_BET } from '../constants/Bet.constants';
+import { ADD_BETS, DELETE_BET, ADD_BET, UPDATE_BET, SET_FILTER } from '../constants/Bet.constants';
 
-export type BetState = BetType2[];
+export type BetState = {
+  items: BetType2[];
+  filter: FilterType;
+};
 
-const initialState: BetState = [];
+const initialState: BetState = {
+  items: [],
+  filter: {
+    attribute: '', 
+    value: '',
+  }
+}
 
 const betsReducer = (state: BetState = initialState, action: BetActions) => {
   switch (action.type) {
     case ADD_BETS:
-      return [
-        ...action.payload.map(deriveBetData)
-      ];
-    case DELETE_BET:
-      return [
-        ...state.filter(bet => bet._id !== action.payload)
-      ];
-    case ADD_BET:
-      return [
+      return {
         ...state,
-        deriveBetData(action.payload)
-      ];
+        items: [...action.payload.map(deriveBetData).sort((a, b) => a.timestamp > b.timestamp ? -1 : 1)]
+      };
+    case DELETE_BET:
+      return {
+        ...state,
+        items: [...state.items.filter(bet => bet._id !== action.payload)]
+      };
+    case ADD_BET:
+      return {
+        ...state,
+        items: [
+          deriveBetData(action.payload),
+          ...state.items,
+        ]
+      };
     case UPDATE_BET:
-      return [
-        ...state.map(bet => {
-          if (bet._id === action.payload._id) {
-            return deriveBetData(action.payload);
-          }
-          return bet;
-        })
-      ]
+      return {
+        ...state,
+        items: [
+          ...state.items.map(bet => {
+            if (bet._id === action.payload._id) {
+              return deriveBetData(action.payload);
+            }
+            return bet;
+          })
+        ]
+      }
+    case SET_FILTER:
+      return {
+        ...state,
+        filter: action.payload
+      }
     default:
       return state;
   }

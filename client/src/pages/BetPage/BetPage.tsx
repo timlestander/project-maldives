@@ -1,11 +1,11 @@
 import BetList from '../../components/BetList/BetList';
-import { BetType, BetType2 } from '../../assets/interfaces';
+import { BetType, BetType2, FilterType } from '../../assets/interfaces';
 import Dialog from "@material-ui/core/Dialog";
 import React, { useEffect, useState } from "react";
 import { Dispatch } from 'redux';
 import AddBetForm from "../../components/AddBetForm/AddBetForm";
 import { RESULT_TYPE } from "../../assets/enums";
-import { InfoBoxes, Wrapper } from './BetPage.styles';
+import { FilterButton, FilterTitle, InfoBoxes, QuickFilters, Wrapper } from './BetPage.styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { BetActions } from '../../store/actions/Bet.actions';
@@ -28,7 +28,14 @@ type Props = {
 }
 
 const BetPage: React.FC<Props> = () => {
-  const bets = useSelector((state: AppState) => state.bets).sort((a, b) => a > b ? -1 : 1);
+  const bets = useSelector((state: AppState) => {
+    const { attribute, value } = state.bets.filter;
+    if (attribute && value) {
+      return state.bets.items.filter(bet => (bet as any)[attribute] === value);
+    } else {
+      return state.bets.items;
+    }
+  });
 
   const betDispatch = useDispatch<Dispatch<BetActions>>();
   const betterDispatch = useDispatch<Dispatch<BetterActions>>();
@@ -78,7 +85,8 @@ const BetPage: React.FC<Props> = () => {
       }
     })
 
-    return Math.floor((winnings / wagered) * 100);
+
+    return wagered > 0 ? Math.floor((winnings / wagered) * 100) : 0;
   }
 
   const getTotal = () => {
@@ -155,6 +163,10 @@ const BetPage: React.FC<Props> = () => {
     setAddDialogOpen(true);
   }
 
+  const onQuickFilter = (quickFilter: FilterType) => {
+    betDispatch({ type: BetConstants.SET_FILTER, payload: quickFilter });
+  }
+
   return (
     <Wrapper>
       {bets && !isFakeLoading && (
@@ -165,6 +177,15 @@ const BetPage: React.FC<Props> = () => {
             <InfoBox title="Andel träffar" value={getHitRate()} suffix="%"/>
             <InfoBox title="Totalt i banken" value={getTotal()} suffix="kr" />
           </InfoBoxes>
+
+          <QuickFilters>
+            <FilterTitle>Snabbfiltrera:</FilterTitle>
+            <FilterButton onClick={() => onQuickFilter({ attribute: 'better', value: 'Tim' })}>Tim</FilterButton>
+            <FilterButton onClick={() => onQuickFilter({ attribute: 'better', value: 'Babben' })}>Babben</FilterButton>
+            <FilterButton onClick={() => onQuickFilter({ attribute: 'better', value: 'Jolle' })}>Jolle</FilterButton>
+            <FilterButton onClick={() => onQuickFilter({ attribute: 'better', value: 'Joppe' })}>Joppe</FilterButton>
+            <FilterButton onClick={() => onQuickFilter({ attribute: '', value: '' })}>Rensa</FilterButton>
+          </QuickFilters>
 
           <BetList 
             bets={bets} 

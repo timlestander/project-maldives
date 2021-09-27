@@ -8,7 +8,6 @@ const Header = () => {
       <Navbar>
         <Link to="/">Översikt</Link>
         <Link to="/graphs">Träffligan</Link>
-        <Link to="/graphs">Vinstligan</Link>
       </Navbar>
     </Wrapper>
   )

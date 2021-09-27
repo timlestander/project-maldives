@@ -1,4 +1,4 @@
-import { BetType } from "../../assets/interfaces";
+import { BetType, FilterType } from "../../assets/interfaces";
 
 export interface IAddBetsAction {
   readonly type: '[BET] ADD_BETS';
@@ -20,8 +20,14 @@ export interface IUpdateBetAction {
   payload: BetType;
 }
 
+export interface ISetFilterAction {
+  readonly type: '[BET] SET_FILTER';
+  payload: FilterType;
+}
+
 export type BetActions = 
   | IAddBetsAction
   | IAddBetAction
   | IDeleteBetAction
   | IUpdateBetAction
+  | ISetFilterAction

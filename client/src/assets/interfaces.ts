@@ -38,3 +38,8 @@ export type BetType2 = {
   result: RESULT_TYPE;
   type: string;
 }
+
+export type FilterType = {
+  attribute: string;
+  value: any;
+}

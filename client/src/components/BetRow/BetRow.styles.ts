@@ -29,30 +29,21 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Details = styled.div`
-  padding: 12px 12px 12px 32px;
-  display: flex;
-  flex-direction: column;
+export const DetailsTable = styled.table`
+  padding: 12px;
+  display: block;
 `;
 
-export const DetailsListHeader = styled.div`
-  display: flex;
+export const DetailsTableRow = styled.tr``;
+
+export const DetailsTableHeaderItem = styled.th`
+  text-align: left;
+  padding: 8px 32px;
 `
 
-export const DetailsListHeaderItem = styled.div`
-  padding: 8px 4px;
-  flex: 1;
-  font-weight: bold;
-`
-
-export const DetailsListBody = styled.div`
-  display: flex;
+export const DetailsTableDataItem = styled.td`
+  padding: 8px 32px;
 `;
-
-export const DetailsListBodyItem = styled.div`
-  padding: 8px 4px;
-  flex: 1;
-`
 
 export const ListItem = styled.div`
   flex: 1;
